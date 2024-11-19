@@ -5,19 +5,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('welcome');
-
 Route::controller(HomeController::class)->group(
-    function(){
+    function () {
         Route::get('/', 'index')->name('welcome');
     }
 );
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('vehicles.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,9 +22,13 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::controller(VehicleController::class)->group(
-    function(){
-        Route::get('vehicles', 'index')->name('vehicles.index');
+    function () {
+        Route::get('vehicles', 'index')->middleware(['auth', 'verified'])->name('vehicles');
+    //     Route::get('/{vehicle}', 'show')->name('vehicles.show');
+    //     Route::get('/{vehicle}/edit', 'edit')->name('vehicles.edit'); 
+    //     Route::put('/{vehicle}', 'update')->name('vehicles.update');
+    //     Route::delete('/{vehicle}', 'destroy')->name('vehicles.destroy');
     }
 );
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

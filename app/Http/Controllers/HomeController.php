@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
 use App\Models\VehicleMake;
+use App\Models\VehicleModel;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,10 +14,10 @@ class HomeController extends Controller
 
         return view('welcome', [
             'makes' => VehicleMake::all(),
-            'latestVehicles' => Vehicle::with(['user', 'make', 'model', 'images'])
+            'models' => VehicleModel::all(),
+            'allVehicles' => Vehicle::with(['user', 'make', 'model', 'images'])
                 ->latest()
-                ->take(4)
-                ->get(),
+                ->paginate(8),
         ]);
     }
 }

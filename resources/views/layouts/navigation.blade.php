@@ -13,7 +13,7 @@
             {{ __('Home') }}
         </x-responsive-nav-link>
         @auth
-        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+        <x-responsive-nav-link :href="route('vehicles')" :active="request()->routeIs('vehicles')">
             {{ __('Dashboard') }}
         </x-responsive-nav-link>
         @endauth

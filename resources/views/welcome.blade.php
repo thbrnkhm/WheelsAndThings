@@ -27,36 +27,170 @@
         </div>
     </section>
 
-    <!-- new right now section -->
-    <div class="container-fluid border-2 border-sky-700">
-        <!-- Quick Search Form -->
-        <form action="{{ route('vehicles.index') }}" method="GET" class="max-w-3xl">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <select name="make" class="rounded-lg text-gray-800">
-                    <option value="">All Makes</option>
-                    @foreach($makes as $make)
-                    <option value="{{ $make->id }}">{{ $make->name }}</option>
-                    @endforeach
-                </select>
-                <select name="price_range" class="rounded-lg text-gray-800">
-                    <option value="">Price Range</option>
-                    <option value="0-10000">Under $10,000</option>
-                    <option value="10000-20000">$10,000 - $20,000</option>
-                    <option value="20000+">Over $20,000</option>
-                </select>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg">
-                    Search Vehicles
-                </button>
-            </div>
-        </form>
-        <!-- Cards Grid -->
-        for
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-5" id="new-carousel">
+    <!-- filters -->
+    <div class="container-fluid">
+        <div class="grid grid-row-2">
+            <!-- actual filters -->
+            <div class="row border-t-2 border-zinc-800 p-5 flex justify-between">
 
-            @foreach($latestVehicles as $vehicle)
-            <x-vehicle-card :vehicle="$vehicle" />
-            @endforeach
-            
+                <!-- sort -->
+                <x-dropdown align="left" width="48">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none transition">
+                            <span>Sort</span>
+                            <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                            </svg>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <x-dropdown-link>
+                            Newest
+                        </x-dropdown-link>
+                        <x-dropdown-link>
+                            Lowest to Highest (Price)
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+
+                <!-- other filters -->
+                <div class="grid grid-row-1 grid-flow-col gap-4">
+                    <!-- model filter -->
+                    <div class="div">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none transition">
+                                    <span>Model</span>
+                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link>
+                                    Benz
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    Beemer
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    Audi
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    and dat..
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+                    <!-- diactivated till user chooses vehicle make -->
+                    <div class="div">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none transition">
+                                    <span>Make</span>
+                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link>
+                                    GLE 63 s
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    c200
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    A 45 s
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    c 63 s AMG
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+                    <!-- price ranges -->
+                    <div class="div">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none transition">
+                                    <span>Price Range</span>
+                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link>
+                                    None
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    less than P10,000.00
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    less than P50,000.00
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    less than P200,000.00
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    more than P200,000.00
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                </div>
+            </div>
+            <!-- show filters -->
+            <div class="flex flex-row gap-4 p-5 bg-zinc-200 dark:bg-zinc-800">
+
+                <div>
+                    <span class="inline-flex items-center px-4 py-2 btext-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 ">Filters |</span>
+                </div>
+
+                <!-- show selected filters -->
+                <div>
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-4 py-2 border-2 border-dashed text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition">
+                                <span>Sort</span>
+                                <i class="fa-solid fa-circle-xmark ml-2"></i>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link>
+                                Newest
+                            </x-dropdown-link>
+                            <x-dropdown-link>
+                                Lowest to Highest (Price)
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+            </div>
         </div>
     </div>
+
+    <!-- new right now section -->
+    <div class="container-fluid">
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
+
+            @foreach($allVehicles as $vehicle)
+            <x-vehicle-card :vehicle="$vehicle" />
+            @endforeach
+
+        </div>
+
+        <div class="p-5">
+            {{ $allVehicles->links() }}
+        </div>
+    </div>
+
+    <!-- Footer Component -->
+    <x-footer />
 </x-app-layout>
