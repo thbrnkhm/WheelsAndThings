@@ -1,52 +1,62 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- tailwind script -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- font awesome script -->
-    <script src="https://kit.fontawesome.com/f494d78729.js" crossorigin="anonymous"></script>
-
-</head>
-
-<body class="font-sans antialiased dark:bg-zinc-900 dark:text-white/50">
-    <header class="lg:grid-cols-3 pt-5 pr-10">
-        @if (Route::has('login'))
-        <nav class="-mx-3 flex flex-1 justify-end">
-            @auth
-            <a
-                href="{{ url('/dashboard') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium hover:text-blue-700 dark:hover:text-white ">
-                Dashboard
+<x-app-layout>
+    <!-- hero section -->
+    <section class="bg-white dark:bg-zinc-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <a href="#" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
+                <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span class="text-sm font-medium">Get jiggy with it</span>
+                <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
             </a>
-            @else
-            <a href="{{ route('login') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium hover:text-blue-700 dark:hover:text-white ">Log in <i class="fa-solid fa-caret-right text-sm" style="margin-left: 5px; "></i>
-            </a>
-            @if (Route::has('register'))
-            <a
-                type="button"
-                href="{{ route('register') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-zinc-800  bg-white rounded-full  hover:bg-zinc-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-zinc-100 dark:focus:ring-zinc-700 dark:bg-zinc-800 dark:text-zinc-400  dark:hover:text-white dark:hover:bg-zinc-700">
-                Register
-            </a>
-            @endif
-            @endauth
-        </nav>
-        @endif
-    </header>
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We invest in the world’s potential</h1>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. In laudantium maiores praesentium et expedita rerum eveniet autem saepe nemo eaque eum sapiente suscipit deleniti corporis harum hic beatae, quibusdam doloribus.</p>
+            <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+                <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    Learn more
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+                <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                    </svg>
+                    Watch video
+                </a>
+            </div>
+        </div>
+    </section>
 
-    <!-- footer -->
-    @include('components.footer')
-</body>
+    <!-- new right now section -->
+    <div class="container-fluid border-2 border-sky-700">
+        <!-- Quick Search Form -->
+        <form action="{{ route('vehicles.index') }}" method="GET" class="max-w-3xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <select name="make" class="rounded-lg text-gray-800">
+                    <option value="">All Makes</option>
+                    @foreach($makes as $make)
+                    <option value="{{ $make->id }}">{{ $make->name }}</option>
+                    @endforeach
+                </select>
+                <select name="price_range" class="rounded-lg text-gray-800">
+                    <option value="">Price Range</option>
+                    <option value="0-10000">Under $10,000</option>
+                    <option value="10000-20000">$10,000 - $20,000</option>
+                    <option value="20000+">Over $20,000</option>
+                </select>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg">
+                    Search Vehicles
+                </button>
+            </div>
+        </form>
+        <!-- Cards Grid -->
+        for
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-5" id="new-carousel">
 
-</html>
+            @foreach($latestVehicles as $vehicle)
+            <x-vehicle-card :vehicle="$vehicle" />
+            @endforeach
+            
+        </div>
+    </div>
+</x-app-layout>

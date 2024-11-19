@@ -9,4 +9,9 @@ class VehicleImage extends Model
 {
     /** @use HasFactory<\Database\Factories\VehicleImageFactory> */
     use HasFactory;
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
 }

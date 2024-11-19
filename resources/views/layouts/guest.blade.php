@@ -21,14 +21,14 @@
 <body>
     
     <!-- /* From Uiverse.io by themrsami */ -->
-    <div class="flex flex-col items-center justify-center h-screen">
-        <div class="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+    <div class="flex flex-col items-center justify-center h-screen bg-white dark:bg-zinc-900">
+        <div class="w-full max-w-md bg-white dark:bg-zinc-900 rounded-lg shadow-md p-6">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <x-application-logo class="w-20 h-20 fill-current text-zinc-500" />
                 </a>
             </div>
-            <div class="w-full bg-white overflow-hidden">
+            <div class="w-full bg-white dark:bg-zinc-900 overflow-hidden">
                 {{ $slot }}
             </div>
 

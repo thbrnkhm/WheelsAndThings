@@ -9,4 +9,17 @@ class VehicleMake extends Model
 {
     /** @use HasFactory<\Database\Factories\VehicleMakeFactory> */
     use HasFactory;
+
+    protected $fillable = ['name'];
+
+    // relationships
+    public function models()
+    {
+        return $this->hasMany(VehicleModel::class);
+    }
+
+    public function vehicles()
+    {
+        return $this->hasMany(Vehicle::class);
+    }
 }
