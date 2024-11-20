@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('mileage');
             $table->string('year');
             $table->string('condition');
-            $table->string('description');
+            $table->text('description');
             $table->timestamps();
         });
     }

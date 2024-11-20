@@ -2,11 +2,18 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <!-- fullname -->
+        <div class="mt-4">
+            <x-input-label for="fullname" :value="__('FullName')" />
+            <x-text-input id="fullname" class="block mt-1 w-full" type="text" name="fullname" :value="old('fullname')" required autofocus />
+            <x-input-error :messages="$errors->get('fullname')" class="mt-2" />
+        </div>
+
+        <!-- surname -->
+        <div class="mt-4">
+            <x-input-label for="surname" :value="__('Surname')" />
+            <x-text-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="old('surname')" required autofocus />
+            <x-input-error :messages="$errors->get('surname')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
@@ -21,9 +28,9 @@
             <x-input-label for="password" :value="__('Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                type="password"
+                name="password"
+                required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -33,8 +40,8 @@
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                type="password"
+                name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
@@ -47,6 +54,17 @@
             <x-primary-button class="ms-4">
                 {{ __('Register') }}
             </x-primary-button>
+        </div>
+
+        <!-- check for any validation errors and display them -->
+        <div class="mt-2 bg-red-300 dark:bg-red-300">
+            @if ($errors->any())
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li class="text-red-700 dark:text-red-700">{{ $error }}</li>
+                @endforeach
+            </ul>
+            @endif
         </div>
     </form>
 </x-guest-layout>

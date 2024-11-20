@@ -24,10 +24,11 @@ Route::middleware('auth')->group(function () {
 Route::controller(VehicleController::class)->group(
     function () {
         Route::get('vehicles', 'index')->middleware(['auth', 'verified'])->name('vehicles');
-    //     Route::get('/{vehicle}', 'show')->name('vehicles.show');
-    //     Route::get('/{vehicle}/edit', 'edit')->name('vehicles.edit'); 
-    //     Route::put('/{vehicle}', 'update')->name('vehicles.update');
-    //     Route::delete('/{vehicle}', 'destroy')->name('vehicles.destroy');
+        Route::post('/vehicles', 'create')->name('vehicles.index');
+        Route::get('/vehicles/{id}', 'show')->name('vehicles.show');
+        Route::get('/vehicles/{id}/edit', 'edit')->name('vehicles.edit');
+        Route::patch('/vehicles/{id}', 'update')->name('vehicles.update');
+        Route::delete('/vehicles/{id}', 'destroy')->name('vehicles.destroy');
     }
 );
 

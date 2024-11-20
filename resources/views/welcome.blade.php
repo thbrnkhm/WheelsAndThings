@@ -111,6 +111,40 @@
                         </x-dropdown>
                     </div>
 
+                    <!-- year -->
+                    <div class="div">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none transition">
+                                    <span>Year</span>
+                                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link>
+                                    2025
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    2024 - 2020
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    2020 - 2016
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    2016 - 2012
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    2012 - 2008
+                                </x-dropdown-link>
+                                <x-dropdown-link>
+                                    < 2008
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
                     <!-- price ranges -->
                     <div class="div">
                         <x-dropdown align="right" width="48">
@@ -155,7 +189,7 @@
                     <x-dropdown align="left" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-4 py-2 border-2 border-dashed text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition">
-                                <span>Sort</span>
+                                <span>Mercedes-Benz</span>
                                 <i class="fa-solid fa-circle-xmark ml-2"></i>
                             </button>
                         </x-slot>

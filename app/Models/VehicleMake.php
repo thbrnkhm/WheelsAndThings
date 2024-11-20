@@ -10,6 +10,7 @@ class VehicleMake extends Model
     /** @use HasFactory<\Database\Factories\VehicleMakeFactory> */
     use HasFactory;
 
+    // protected $gaurded = [];
     protected $fillable = ['name'];
 
     // relationships

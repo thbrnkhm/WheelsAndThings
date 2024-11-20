@@ -10,6 +10,8 @@ class VehicleImage extends Model
     /** @use HasFactory<\Database\Factories\VehicleImageFactory> */
     use HasFactory;
 
+    protected $fillable = ['vehicle_id', 'path'];
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);

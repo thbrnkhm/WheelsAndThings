@@ -10,8 +10,11 @@ class VehicleModel extends Model
     /** @use HasFactory<\Database\Factories\VehicleModelFactory> */
     use HasFactory;
 
-    protected $fillable = ['name'];
-    
+    protected $fillable = ['vehicle_make_id','name'];
+
+    // protected $gaurded = [];
+
+
     public function make()
     {
         return $this->belongsTo(VehicleMake::class);
