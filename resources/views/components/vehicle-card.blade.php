@@ -1,13 +1,17 @@
 <div class="col" id="vehicle-card">
     <a href="{{ route('vehicles.show', $vehicle->id) }}" class="block w-full h-96 max-w-sm bg-white border border-zinc-200 rounded-lg shadow hover:border-blue-200 dark:bg-zinc-800 dark:border-zinc-700">
         <!-- Vehicle Image -->
-        <img class="rounded-t-lg w-full h-48 object-cover"
-            src="{{ $vehicle->images->first()->path }}"
-            alt="{{ $vehicle->make->name }} {{ $vehicle->model->name }}">
+        @foreach($vehicle->images as $image)
+        <div>
+            <img class="bg-zinc-200 rounded-t-lg w-full h-48 object-cover"
+                src="/public/storage/vehicle_images/{{ $vehicle->path }}"
+                alt="{{ $vehicle->make->name }} {{ $vehicle->model->name }} / path: {{ $image->path }}">
 
+        </div>
+        @endforeach
         <!-- Vehicle Details -->
         <div class="p-5">
-            <small class="text-black dark:text-zinc-500">{{ $vehicle->user->fullname }}</small>
+            <small class="text-black dark:text-zinc-500">@ {{ $vehicle->user->fullname }}</small>
             <h5 class="mb-2 text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
                 {{ $vehicle->year }} {{ $vehicle->make->name }}
                 <span class="text-zinc-300 dark:text-zinc-500">{{ $vehicle->model->name }}</span>

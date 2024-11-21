@@ -33,7 +33,7 @@
         <div class="py-6 px-8 max-lg:max-w-2xl">
             <div>
                 <h1 class="text-2xl font-extrabold text-zinc-800 text-black dark:text-white">{{ $vehicle->make->name }} <span class="text-zinc-600 dark:text-zinc-400">{{ $vehicle->model->name }}</span></h1>
-                <p class="text-sm text-zinc-400 mt-2">{{ $vehicle->user->fullname }}</p>
+                <p class="text-sm text-zinc-400 mt-2">@ {{ $vehicle->user->fullname }}</p>
             </div>
 
             <!-- <div class="flex space-x-1 mt-4">
@@ -93,23 +93,32 @@
 
             <div class="grid grid-rows-2">
 
-                @auth
+                <!-- only logged in users should see edit and delete buttons -->
+                @can('edit-delete-vehicle', $vehicle)
 
                 <button onclick="window.location.href='/vehicles/{{ $vehicle->id }}/edit'" type="button" class="text-white bg-sky-500 dark:bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-sky-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Edit <i class="fa-solid fa-pen ml-2"></i> </button>
 
-                <button type="button" class="text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-red-500 hover:text-white focus:z-10 focus:ring-4 focus:ring-red-500 dark:focus:ring-red-500 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:border-transparent dark:hover:bg-red-500">Delete <i class="fa-solid fa-trash ml-2"></i></button>
+                <form method="POST" action="/vehicles/{{ $vehicle->id }}">
+                    @csrf
+                    @method("DELETE")
+                    <button type="submit" class="w-full text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-red-500 hover:text-white focus:z-10 focus:ring-4 focus:ring-red-500 dark:focus:ring-red-500 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:border-transparent dark:hover:bg-red-500">Delete <i class="fa-solid fa-trash ml-2"></i></button>
+                </form>
 
-                @else
+                @endcan
+
+                @cannot('edit-delete-vehicle', $vehicle)
 
                 <button type="button" class="text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Buy now!</button>
 
                 <button type="button" class="text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-zinc-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-zinc-100 dark:focus:ring-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:bg-zinc-700">Add to cart</button>
 
-                @endauth
+                @endcan
             </div>
         </div>
 
 
     </div>
+
+    @include('components.footer');
 
 </x-app-layout>

@@ -30,12 +30,69 @@
 
                     <!-- Modal Body (Scrollable) -->
                     <div class="p-4 overflow-y-auto h-[calc(100%-60px)]">
-                        <form method="POST" action="/vehicles">
+                        <form method="POST" action="/vehicles" enctype="multipart/form-data">
                             @csrf
                             <!-- Vehicle Make -->
                             <label for="make" class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white">Vehicle Make</label>
-                            <input type="text" id="make" name="make" class="w-full mb-4 border rounded p-2 bg-white dark:bg-zinc-700 border-zinc-300 dark:border-zinc-700 dark:text-white dark:placeholder-zinc-400" placeholder="e.g., Mercedes-Benz, BMW, Audi, Toyota, etc.">
+                            <select name="make" class="w-full mb-4 border rounded p-2 bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-400 dark:placeholder-zinc-400">
+                                <option value="">Select a Make</option>
+                                <option value="Acura">Acura</option>
+                                <option value="Alfa Romeo">Alfa Romeo</option>
+                                <option value="Aston Martin">Aston Martin</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Bentley">Bentley</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Buick">Buick</option>
+                                <option value="Cadillac">Cadillac</option>
+                                <option value="Chevrolet">Chevrolet</option>
+                                <option value="Chrysler">Chrysler</option>
+                                <option value="Citroën">Citroën</option>
+                                <option value="Dacia">Dacia</option>
+                                <option value="Daewoo">Daewoo</option>
+                                <option value="Dodge">Dodge</option>
+                                <option value="Ferrari">Ferrari</option>
+                                <option value="Fiat">Fiat</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Genesis">Genesis</option>
+                                <option value="GMC">GMC</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Infiniti">Infiniti</option>
+                                <option value="Jaguar">Jaguar</option>
+                                <option value="Jeep">Jeep</option>
+                                <option value="Kia">Kia</option>
+                                <option value="Lamborghini">Lamborghini</option>
+                                <option value="Land Rover">Land Rover</option>
+                                <option value="Lexus">Lexus</option>
+                                <option value="Lincoln">Lincoln</option>
+                                <option value="Lotus">Lotus</option>
+                                <option value="Maserati">Maserati</option>
+                                <option value="Mazda">Mazda</option>
+                                <option value="McLaren">McLaren</option>
+                                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                <option value="MG">MG</option>
+                                <option value="Mini">Mini</option>
+                                <option value="Mitsubishi">Mitsubishi</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Opel">Opel</option>
+                                <option value="Peugeot">Peugeot</option>
+                                <option value="Porsche">Porsche</option>
+                                <option value="Ram">Ram</option>
+                                <option value="Renault">Renault</option>
+                                <option value="Rolls-Royce">Rolls-Royce</option>
+                                <option value="Seat">Seat</option>
+                                <option value="Skoda">Skoda</option>
+                                <option value="Smart">Smart</option>
+                                <option value="Subaru">Subaru</option>
+                                <option value="Suzuki">Suzuki</option>
+                                <option value="Tesla">Tesla</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Volvo">Volvo</option>
+                            </select>
                             <x-input-error :messages="$errors->get('make')" class="mt-2" />
+                            <!-- <input type="text" id="make" name="make" class="w-full mb-4 border rounded p-2 bg-white dark:bg-zinc-700 border-zinc-300 dark:border-zinc-700 dark:text-white dark:placeholder-zinc-400" placeholder="e.g., Mercedes-Benz, BMW, Audi, Toyota, etc.">
+                            <x-input-error :messages="$errors->get('make')" class="mt-2" /> -->
 
                             <!-- Vehicle Model -->
                             <label for="model" class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white">Vehicle Model</label>
@@ -48,8 +105,14 @@
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
 
                             <!-- Image Upload -->
-                            <label class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white" for="images">Upload Images</label>
-                            <input type="file" id="images" name="images" multiple class="block w-full mb-4 text-sm border rounded-lg p-2 bg-gray-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-gray-400 dark:placeholder-gray-400">
+                            <label class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white" for="images">Upload Images (5 images required)</label>
+                            <input
+                                type="file"
+                                id="images"
+                                name="images[]"
+                                multiple
+                                class="block w-full mb-4 text-sm border rounded-lg p-2 bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-400 dark:placeholder-zinc-400"
+                                accept="image/jpeg,image/png,image/jpg,image/webp">
                             <x-input-error :messages="$errors->get('images')" class="mt-2" />
 
                             <!-- Price and Mileage -->
@@ -86,7 +149,7 @@
                                 </div>
                                 <div>
                                     <label for="condition" class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white">Condition</label>
-                                    <select id="condition" name="condition" class="w-full mb-4 border rounded p-2 bg-gray-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-gray-400 dark:placeholder-gray-400">
+                                    <select id="condition" name="condition" class="w-full mb-4 border rounded p-2 bg-zinc-50 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-400 dark:placeholder-zinc-400">
                                         <option value="New">New</option>
                                         <option value="Used">Used</option>
                                         <option value="Certified Pre-Owned">Certified Pre-Owned</option>
