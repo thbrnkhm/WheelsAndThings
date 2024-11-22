@@ -2,41 +2,47 @@
 
     <div class="grid grid-cols-2 p-5">
         <div class="grid gap-4 p-5">
+            @if ($vehicle->images->isNotEmpty())
+            {{-- Main large image --}}
             <div>
-                <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt="">
-            </div>
-            <div class="grid grid-cols-5 gap-4">
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
-                </div>
+                <img class="h-auto max-w-full rounded-lg object-cover"
+                    src="{{ asset('storage/' . $vehicle->images->first()->path) }}"
+                    alt="{{ $vehicle->make->name ?? '' }} {{ $vehicle->model->name ?? '' }}">
             </div>
 
+            {{-- Thumbnail grid --}}
+            @if ($vehicle->images->count() > 1)
+            <div class="grid grid-cols-5 gap-4">
+                @foreach ($vehicle->images->take(5) as $index => $image)
+                <div>
+                    <img class="h-24 w-full rounded-lg object-cover cursor-pointer hover:opacity-75 transition-opacity"
+                        src="{{ asset('storage/' . $image->path) }}"
+                        alt="{{ $vehicle->make->name ?? '' }} {{ $vehicle->model->name ?? '' }} - Image {{ $index + 1 }}">
+                </div>
+                @endforeach
+
+                {{-- Fill empty slots with placeholder if less than 5 images --}}
+                @for ($i = $vehicle->images->count(); $i < 5; $i++)
+                    <div class="h-24 w-full rounded-lg bg-gray-200 dark:bg-gray-700">
+            </div>
+            @endfor
+        </div>
+        @endif
+        @else
+        {{-- No images placeholder --}}
+        <div class="h-64 w-full rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <span class="text-gray-500 dark:text-gray-400">No images available</span>
+        </div>
+        @endif
+    </div>
+
+    <div class="py-6 px-8 max-lg:max-w-2xl">
+        <div>
+            <h1 class="text-2xl font-extrabold text-zinc-800 text-black dark:text-white">{{ $vehicle->make->name }} <span class="text-zinc-600 dark:text-zinc-400">{{ $vehicle->model->name }}</span></h1>
+            <p class="text-sm text-zinc-400 mt-2">@ {{ $vehicle->user->fullname }}</p>
         </div>
 
-        <!-- <div class="containe p-5">
-            <h1 class="text-black dark:text-white font-bold text-2xl">{{ $vehicle->make->name }} <span class="text-zinc-600 dark:text-zinc-400">{{ $vehicle->model->name }}</span></h1>
-            <br>
-            <p>{{ $vehicle->description }}</p>
-        </div> -->
-        <div class="py-6 px-8 max-lg:max-w-2xl">
-            <div>
-                <h1 class="text-2xl font-extrabold text-zinc-800 text-black dark:text-white">{{ $vehicle->make->name }} <span class="text-zinc-600 dark:text-zinc-400">{{ $vehicle->model->name }}</span></h1>
-                <p class="text-sm text-zinc-400 mt-2">@ {{ $vehicle->user->fullname }}</p>
-            </div>
-
-            <!-- <div class="flex space-x-1 mt-4">
+        <!-- <div class="flex space-x-1 mt-4">
                 <svg class="w-[18px] fill-[#facc15]" viewBox="0 0 14 13" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -73,48 +79,48 @@
                 </button>
             </div> -->
 
-            <div class="mt-8">
-                <p class="text-zinc-800 dark:text-zinc-100 text-4xl font-bold">P {{ number_format($vehicle->price, 2) }}</p>
-            </div>
+        <div class="mt-8">
+            <p class="text-zinc-800 dark:text-zinc-100 text-4xl font-bold">P {{ number_format($vehicle->price, 2) }}</p>
+        </div>
 
-            <div class="mt-8">
-                <ol>
-                    <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition mr-3">Year: {{ $vehicle->year }}</li>
-                    <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition mr-3">Mileage: {{ number_format($vehicle->mileage, 2) }} km</li>
-                    <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition">Condition: {{ $vehicle->condition }}</li>
-                </ol>
-            </div>
-            <div class="my-8">
-                <div>
-                    <h3 class="text-xl font-bold text-zinc-800 dark:text-zinc-200">Product Description</h3>
-                    <p class="text-sm text-zinc-800 dark:text-zinc-200 mt-4">{{ $vehicle->description }}</p>
-                </div>
-            </div>
-
-            <div class="grid grid-rows-2">
-
-                <!-- only logged in users should see edit and delete buttons -->
-                @can('edit-delete-vehicle', $vehicle)
-
-                <button onclick="window.location.href='/vehicles/{{ $vehicle->id }}/edit'" type="button" class="text-white bg-sky-500 dark:bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-sky-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Edit <i class="fa-solid fa-pen ml-2"></i> </button>
-
-                <form method="POST" action="/vehicles/{{ $vehicle->id }}">
-                    @csrf
-                    @method("DELETE")
-                    <button type="submit" class="w-full text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-red-500 hover:text-white focus:z-10 focus:ring-4 focus:ring-red-500 dark:focus:ring-red-500 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:border-transparent dark:hover:bg-red-500">Delete <i class="fa-solid fa-trash ml-2"></i></button>
-                </form>
-
-                @endcan
-
-                @cannot('edit-delete-vehicle', $vehicle)
-
-                <button type="button" class="text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Buy now!</button>
-
-                <button type="button" class="text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-zinc-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-zinc-100 dark:focus:ring-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:bg-zinc-700">Add to cart</button>
-
-                @endcan
+        <div class="mt-8">
+            <ol>
+                <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition mr-3">Year: {{ $vehicle->year }}</li>
+                <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition mr-3">Mileage: {{ number_format($vehicle->mileage, 2) }} km</li>
+                <li class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-700 hover:text-zinc-800 dark:hover:text-zinc-300 focus:outline-none transition">Condition: {{ $vehicle->condition }}</li>
+            </ol>
+        </div>
+        <div class="my-8">
+            <div>
+                <h3 class="text-xl font-bold text-zinc-800 dark:text-zinc-200">Product Description</h3>
+                <p class="text-sm text-zinc-800 dark:text-zinc-200 mt-4">{{ $vehicle->description }}</p>
             </div>
         </div>
+
+        <div class="grid grid-rows-2">
+
+            <!-- only logged in users should see edit and delete buttons -->
+            @can('edit-delete-vehicle', $vehicle)
+
+            <button onclick="window.location.href='/vehicles/{{ $vehicle->id }}/edit'" type="button" class="text-white bg-sky-500 dark:bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-sky-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Edit <i class="fa-solid fa-pen ml-2"></i> </button>
+
+            <form method="POST" action="/vehicles/{{ $vehicle->id }}">
+                @csrf
+                @method("DELETE")
+                <button type="submit" class="w-full text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-red-500 hover:text-white focus:z-10 focus:ring-4 focus:ring-red-500 dark:focus:ring-red-500 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:border-transparent dark:hover:bg-red-500">Delete <i class="fa-solid fa-trash ml-2"></i></button>
+            </form>
+
+            @endcan
+
+            @cannot('edit-delete-vehicle', $vehicle)
+
+            <button type="button" class="text-white bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:focus:ring-zinc-700 dark:border-zinc-700">Buy now!</button>
+
+            <button type="button" class="text-white dark:text-white py-2.5 px-5 me-2 mb-2 text-sm font-medium focus:outline-none bg-white dark:bg-zinc-800 border-2 border-zinc-200 hover:bg-zinc-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-zinc-100 dark:focus:ring-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-600 dark:hover:text-white dark:hover:bg-zinc-700">Add to cart</button>
+
+            @endcan
+        </div>
+    </div>
 
 
     </div>

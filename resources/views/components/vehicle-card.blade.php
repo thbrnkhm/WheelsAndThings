@@ -1,14 +1,11 @@
 <div class="col" id="vehicle-card">
     <a href="{{ route('vehicles.show', $vehicle->id) }}" class="block w-full h-96 max-w-sm bg-white border border-zinc-200 rounded-lg shadow hover:border-blue-200 dark:bg-zinc-800 dark:border-zinc-700">
         <!-- Vehicle Image -->
-        @foreach($vehicle->images as $image)
-        <div>
-            <img class="bg-zinc-200 rounded-t-lg w-full h-48 object-cover"
-                src="/public/storage/vehicle_images/{{ $vehicle->path }}"
-                alt="{{ $vehicle->make->name }} {{ $vehicle->model->name }} / path: {{ $image->path }}">
-
-        </div>
-        @endforeach
+        @if ($vehicle->images->isNotEmpty())
+        <img class="bg-zinc-200 rounded-t-lg w-full h-48 object-cover"
+            src="{{ asset('storage/' . $vehicle->images->first()->path) }}"
+            alt="{{ $vehicle->make->name }} {{ $vehicle->model->name }}">
+        @endif
         <!-- Vehicle Details -->
         <div class="p-5">
             <small class="text-black dark:text-zinc-500">@ {{ $vehicle->user->fullname }}</small>

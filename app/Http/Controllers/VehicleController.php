@@ -13,24 +13,127 @@ use Illuminate\Support\Facades\Gate;
 
 class VehicleController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     // get the results of all vehicles
+    //     // return view('welcome',['vehicles' => Vehicle::with('user', 'make', 'model', 'images')->paginate(15)]);
+
+    //     // $query = Vehicle::with(['user', 'make', 'model', 'images']);
+
+    //     // return all cars
+    //     return view('vehicles.index', [
+    //         'vehicles' => Vehicle::where('user_id', Auth::id())
+    //             ->with(['user', 'make', 'model', 'images'])
+    //             ->latest()
+    //             ->paginate(12),
+    //         // 'makes' => VehicleMake::all(),
+    //         // 'models' => VehicleModel::all(),
+    //     ]);
+
+    //     // dd(Vehicle::with(['user', 'make', 'model', 'images'])->images->toArray()); // Add this temporarily to your controller to debug
+    // }
+
     public function index(Request $request)
     {
-        // get the results of all vehicles
-        // return view('welcome',['vehicles' => Vehicle::with('user', 'make', 'model', 'images')->paginate(15)]);
+        $query = Vehicle::with(['make', 'model', 'images', 'user']);
 
-        // $query = Vehicle::with(['user', 'make', 'model', 'images']);
+        // Apply filters if they exist in the session
+        if ($request->has('apply_filters')) {
+            $filters = session('vehicle_filters', []);
 
-        // return all cars
-        return view('vehicles.index', [
-            'vehicles' => Vehicle::where('user_id', Auth::id())
-                ->with(['user', 'make', 'model', 'images'])
-                ->latest()
-                ->paginate(12),
-            // 'makes' => VehicleMake::all(),
-            // 'models' => VehicleModel::all(),
+            if (!empty($filters['make'])) {
+                $query->whereHas('make', function ($q) use ($filters) {
+                    $q->where('name', $filters['make']);
+                });
+            }
+
+            if (!empty($filters['model'])) {
+                $query->whereHas('model', function ($q) use ($filters) {
+                    $q->where('name', $filters['model']);
+                });
+            }
+
+            if (!empty($filters['year'])) {
+                $yearRange = $this->parseYearRange($filters['year']);
+                $query->whereBetween('year', $yearRange);
+            }
+
+            if (!empty($filters['price_range'])) {
+                $priceRange = $this->parsePriceRange($filters['price_range']);
+                $query->whereBetween('price', $priceRange);
+            }
+
+            if (!empty($filters['sort'])) {
+                switch ($filters['sort']) {
+                    case 'newest':
+                        $query->orderBy('created_at', 'desc');
+                        break;
+                    case 'price_low_high':
+                        $query->orderBy('price', 'asc');
+                        break;
+                    case 'price_high_low':
+                        $query->orderBy('price', 'desc');
+                        break;
+                }
+            }
+        }
+
+        $allVehicles = $query->paginate(12);
+        $makes = VehicleMake::all();
+        $activeFilters = session('vehicle_filters', []);
+
+        return view('vehicles.index', compact('allVehicles', 'makes', 'activeFilters'));
+    }
+
+    public function addFilter(Request $request)
+    {
+        $filters = session('vehicle_filters', []);
+        $filters[$request->type] = $request->value;
+        session(['vehicle_filters' => $filters]);
+
+        return response()->json([
+            'success' => true,
+            'filters' => $filters
         ]);
+    }
 
-        // dd(Vehicle::with(['user', 'make', 'model', 'images'])->images->toArray()); // Add this temporarily to your controller to debug
+    public function removeFilter(Request $request)
+    {
+        $filters = session('vehicle_filters', []);
+        unset($filters[$request->type]);
+        session(['vehicle_filters' => $filters]);
+
+        return response()->json([
+            'success' => true,
+            'filters' => $filters
+        ]);
+    }
+
+    private function parseYearRange($yearFilter)
+    {
+        // Add logic to parse year ranges like "2024 - 2020" into [2020, 2024]
+        $parts = explode(' - ', $yearFilter);
+        if (count($parts) === 2) {
+            return [intval($parts[1]), intval($parts[0])];
+        }
+        return [intval($yearFilter), intval($yearFilter)];
+    }
+
+    private function parsePriceRange($priceFilter)
+    {
+        // Add logic to parse price ranges
+        switch ($priceFilter) {
+            case 'less than P10,000.00':
+                return [0, 10000];
+            case 'less than P50,000.00':
+                return [0, 50000];
+            case 'less than P200,000.00':
+                return [0, 200000];
+            case 'more than P200,000.00':
+                return [200000, PHP_FLOAT_MAX];
+            default:
+                return [0, PHP_FLOAT_MAX];
+        }
     }
 
     // show specific vehicle item

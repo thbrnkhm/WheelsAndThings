@@ -106,7 +106,6 @@
                 name="images[]"
                 multiple
                 class="block w-full  text-sm border rounded-lg p-2 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-400 dark:placeholder-zinc-400"
-                value="{{ $vehicle->images->first()->path }}"
                 accept="image/jpeg,image/png,image/jpg,image/webp">
             <p class="mb-4 text-sm text-zinc-400 dark:text-zinc-500">
                 Leave empty if you do not wish to change images. Updating this will replace all your existing images.

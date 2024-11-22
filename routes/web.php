@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VehicleController;
 use App\Models\Vehicle;
 use GuzzleHttp\Middleware;
@@ -35,7 +36,16 @@ Route::controller(VehicleController::class)->group(
             ->middleware('auth');
         Route::delete('/vehicles/{id}', 'destroy')->name('vehicles.destroy')
             ->middleware('auth');
+
+        Route::post('/vehicles/add-filter', 'addFilter');
+        Route::post('/vehicles/remove-filter',  'removeFilter');
+        Route::get('/vehicles/get-filters', 'getFilters');
     }
 );
+
+// Search 
+Route::controller(SearchController::class)->group(function () {
+    Route::get('search', 'search');
+});
 
 require __DIR__ . '/auth.php';
